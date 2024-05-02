@@ -5,42 +5,63 @@ class Program
 {
     static void Main(string[] args)
     {
-        Dictionary<int, int> b = new Dictionary<int, int> { { 500, 5 }, { 100, 10 }, { 50, 5 }, { 10, 5 } };
-        PrintBanknotes(b);
-        Console.Write("Введите сумму: ");
-        int s = Convert.ToInt32(Console.ReadLine());
-        Dictionary<int, int> o = CalculateNotes(b, s);
-        if (o == null)
-        {
-            Console.WriteLine("Невозможно выдать сумму!");
-            return;
-        }
-        PrintIssuedNotes(o);
+        Dictionary<int, int> banknotes = new Dictionary<int, int> { { 500, 5 }, { 100, 10 }, { 50, 5 }, { 10, 5 } };
+        PrintBanknotes(banknotes);
+        int amount = ReadAmountFromUser();
+        Dictionary<int, int> issuedNotes = CalculateIssuedNotes(banknotes, amount);
+        PrintIssuedNotes(issuedNotes);
     }
 
     static void PrintBanknotes(Dictionary<int, int> banknotes)
     {
         Console.WriteLine("Купюры:");
-        foreach (KeyValuePair<int, int> p in banknotes) Console.WriteLine(p.Key + ": " + p.Value);
+        foreach (KeyValuePair<int, int> note in banknotes)
+        {
+            Console.WriteLine($"{note.Key}: {note.Value}");
+        }
     }
 
-    static Dictionary<int, int> CalculateNotes(Dictionary<int, int> banknotes, int amount)
+    static int ReadAmountFromUser()
+    {
+        int amount;
+        do
+        {
+            Console.Write("Введите сумму: ");
+        } while (!int.TryParse(Console.ReadLine(), out amount) || amount <= 0);
+        return amount;
+    }
+
+    static Dictionary<int, int> CalculateIssuedNotes(Dictionary<int, int> banknotes, int amount)
     {
         Dictionary<int, int> issuedNotes = new Dictionary<int, int>();
-        foreach (KeyValuePair<int, int> p in banknotes)
+        foreach (KeyValuePair<int, int> note in banknotes)
         {
-            int count = amount / p.Key;
-            if (count > p.Value) count = p.Value;
-            amount -= count * p.Key;
-            issuedNotes.Add(p.Key, count);
-            if (amount == 0) break;
+            int count = amount / note.Key;
+            if (count > note.Value)
+            {
+                count = note.Value;
+            }
+            amount -= count * note.Key;
+            issuedNotes.Add(note.Key, count);
+            if (amount == 0)
+            {
+                break;
+            }
         }
         return amount == 0 ? issuedNotes : null;
     }
 
     static void PrintIssuedNotes(Dictionary<int, int> issuedNotes)
     {
+        if (issuedNotes == null)
+        {
+            Console.WriteLine("Невозможно выдать сумму!");
+            return;
+        }
         Console.WriteLine("Выданные купюры:");
-        foreach (KeyValuePair<int, int> p in issuedNotes) Console.WriteLine(p.Key + ": " + p.Value);
+        foreach (KeyValuePair<int, int> note in issuedNotes)
+        {
+            Console.WriteLine($"{note.Key}: {note.Value}");
+        }
     }
 }
