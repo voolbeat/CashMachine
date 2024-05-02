@@ -15,7 +15,7 @@ class Program
     static void PrintBanknotes(Dictionary<int, int> banknotes)
     {
         Console.WriteLine("Купюры:");
-        foreach (KeyValuePair<int, int> note in banknotes)
+        foreach (var note in banknotes)
         {
             Console.WriteLine($"{note.Key}: {note.Value}");
         }
@@ -34,19 +34,12 @@ class Program
     static Dictionary<int, int> CalculateIssuedNotes(Dictionary<int, int> banknotes, int amount)
     {
         Dictionary<int, int> issuedNotes = new Dictionary<int, int>();
-        foreach (KeyValuePair<int, int> note in banknotes)
+        foreach (var note in banknotes)
         {
-            int count = amount / note.Key;
-            if (count > note.Value)
-            {
-                count = note.Value;
-            }
+            int count = Math.Min(amount / note.Key, note.Value);
             amount -= count * note.Key;
             issuedNotes.Add(note.Key, count);
-            if (amount == 0)
-            {
-                break;
-            }
+            if (amount == 0) break;
         }
         return amount == 0 ? issuedNotes : null;
     }
@@ -59,7 +52,7 @@ class Program
             return;
         }
         Console.WriteLine("Выданные купюры:");
-        foreach (KeyValuePair<int, int> note in issuedNotes)
+        foreach (var note in issuedNotes)
         {
             Console.WriteLine($"{note.Key}: {note.Value}");
         }
