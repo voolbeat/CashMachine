@@ -6,8 +6,7 @@ class Program
     static void Main(string[] args)
     {
         Dictionary<int, int> b = new Dictionary<int, int> { { 500, 5 }, { 100, 10 }, { 50, 5 }, { 10, 5 } };
-        Console.WriteLine("Купюры:");
-        foreach (KeyValuePair<int, int> p in b) Console.WriteLine(p.Key + ": " + p.Value);
+        PrintBanknotes(b);
         Console.Write("Введите сумму: ");
         int s = Convert.ToInt32(Console.ReadLine()), r;
         Dictionary<int, int> o = new Dictionary<int, int>();
@@ -27,5 +26,10 @@ class Program
         Console.WriteLine("Выданные купюры:");
         foreach (KeyValuePair<int, int> p in o) Console.WriteLine(p.Key + ": " + p.Value);
     }
-}
 
+    static void PrintBanknotes(Dictionary<int, int> banknotes)
+    {
+        Console.WriteLine("Купюры:");
+        foreach (KeyValuePair<int, int> p in banknotes) Console.WriteLine(p.Key + ": " + p.Value);
+    }
+}
